@@ -1,0 +1,24 @@
+import Data.List (isSubsequenceOf, nub, isPrefixOf, tails, elemIndex)
+import Data.Set (fromList, union, difference, size)
+
+-- Function to check if the first string is a subsequence of the second
+subSeq :: String -> String -> Bool
+subSeq = isSubsequenceOf
+
+-- Function to check if the first string is a subword of the second
+subWord :: String -> String -> Bool
+subWord s1 s2 = any (s1 `isPrefixOf`) (tails s2)
+
+-- Function to check if a string is an ABC-word
+isABC :: String -> Bool
+isABC s = case (elemIndex 'a' s, elemIndex 'b' s, elemIndex 'c' s) of
+    (Just ia, Just ib, Just ic) -> ia < ib && ib < ic
+    _ -> False
+
+-- Function to count letters occurring exclusively in one of the two strings
+xLetters :: String -> String -> Int
+xLetters s1 s2 =
+    let set1 = fromList s1
+        set2 = fromList s2
+        unique = (set1 `difference` set2) `union` (set2 `difference` set1)
+    in size unique
