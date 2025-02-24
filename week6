@@ -1,0 +1,28 @@
+import Data.Char (digitToInt)
+
+-- Function to drop even digits from an integer
+dropEvens :: Int -> Int
+dropEvens n =
+    let filteredDigits = filter odd (map digitToInt (show n))
+    in if null filteredDigits then 0 else read (concatMap show filteredDigits)
+
+-- Function to check if there are more zeroes than ones in the binary representation
+moreZeroes :: Int -> Bool
+moreZeroes n =
+    let binary = toBinary n
+        count0 = length (filter (== '0') binary)
+        count1 = length (filter (== '1') binary)
+    in count0 > count1
+
+-- Helper function to convert an integer to a binary string
+toBinary :: Int -> String
+toBinary 0 = "0"
+toBinary n = reverse (binaryHelper n)
+  where
+    binaryHelper 0 = ""
+    binaryHelper x = let (q, r) = quotRem x 2 in show r ++ binaryHelper q
+
+-- Function to get the "toppers" from a list
+toppers :: [Int] -> [Int]
+toppers = snd . foldl (\(maxSoFar, res) x -> if x > maxSoFar then (x, res ++ [x]) else (maxSoFar, res)) (minBound :: Int, [])
+
